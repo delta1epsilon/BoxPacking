@@ -31,22 +31,15 @@ RGLInit <- function(new.device = FALSE, width = 500) {
 PlotCube <- function (object,
                       plot_origin = TRUE, ...) {
     
+    # stop if object origin is not specified
+    if (length(object@origin) == 0) {
+        stop('Specify origin for the object')
+    }
+    
     origin <- object@origin 
     length <- object@length
     height <- object@height
     width <- object@width
-        
-    if (width <= 0) {
-        stop('Spicify argument: width')
-    } else if (length <= 0) {
-        stop('Spicify argument: length')
-    } else if (height <= 0) {
-        stop('Spicify argument: height')
-    }
-    
-    if (class(object) == 'Container') {
-        origin <- c(0, 0, 0)
-    }
     
     vertex1 <- origin
     vertex2 <- origin + c(0, height, width)
