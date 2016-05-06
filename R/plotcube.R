@@ -16,34 +16,26 @@ RGLInit <- function(new.device = FALSE, width = 500) {
 
 #' Plot 3D cube 
 #' 
-#' @param origin - A vector
-#' @param length - A numeric
-#' @param height - A numeric
-#' @param width  - A numeric
-#' @param is_container - logical, plots the box in origin and color is black 
+#' @param object - An object of class 'Container', 'Box' or 'EMS'
 #' @param plot_origin  - logical, whether to plot point at the origin
 #' @examples 
 #' 
 #' RGLInit(new.device = T)  # create new device with specific settings
 #' # plot a container
-#' PlotCube(width = 2, 
-#'          length = 4, 
-#'          height = 2, 
-#'          is_container = TRUE
-#'          )
+#' container <- Container(width = 2, length = 4, height = 2)
+#' PlotCube(container)
+#' 
 #' # plot a box 
-#' PlotCube(origin = c(0, 0, 0), 
-#'          width = 1, 
-#'          length = 1, 
-#'          height = 1
-#'          )
-PlotCube <- function (origin,
-                      length,
-                      height,
-                      width,
-                      is_container = FALSE,
+#' box <- Box(width = 1, length = 1, height = 1, origin = c(0, 0,0))
+#' PlotCube(box)
+PlotCube <- function (object,
                       plot_origin = TRUE, ...) {
     
+    origin <- object@origin 
+    length <- object@length
+    height <- object@height
+    width <- object@width
+        
     if (width <= 0) {
         stop('Spicify argument: width')
     } else if (length <= 0) {
@@ -52,7 +44,7 @@ PlotCube <- function (origin,
         stop('Spicify argument: height')
     }
     
-    if (is_container) {
+    if (class(object) == 'Container') {
         origin <- c(0, 0, 0)
     }
     
@@ -81,7 +73,7 @@ PlotCube <- function (origin,
     
     lines <- t(lines)
     
-    if (is_container) {
+    if (class(object) == 'Container') {
         cube_color <- 'black'
     } else {
         # randomly select color for cube
