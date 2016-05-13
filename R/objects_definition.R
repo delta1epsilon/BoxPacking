@@ -3,7 +3,8 @@ Container <- setClass('Container',
                       slots = c(origin = 'numeric',
                                 length = 'numeric',
                                 height = 'numeric',
-                                width = 'numeric'
+                                width = 'numeric',
+                                ems = 'list'  # list of instances of class EMS 
                                 ),
                       prototype = list(origin = c(0, 0, 0)),
                       validity = function (object) {  # make sure that all parameters are positive
@@ -13,6 +14,25 @@ Container <- setClass('Container',
                               return(TRUE)
                           }
                       )
+
+# create method 'initialize' for Container class to create 
+# slot EMS (initial EMS is whole Container) when
+# an instance of class Container is being created 
+setMethod('initialize', 
+          'Container',
+          function (.Object, ...) {
+              .Object <- callNextMethod()
+              .Object@ems <- 
+                  list(
+                      EMS(origin = .Object@origin,
+                          length = .Object@length,
+                          height = .Object@height,
+                          width = .Object@width
+                          )
+                      )
+              return(.Object)
+          }
+          )
 
 # define class for boxes
 Box <- setClass('Box',
