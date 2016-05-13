@@ -3,7 +3,7 @@
 #' @param container - An object of class 'Container' or 'EMS' 
 #' @param box       - An object of class 'Box'
 #'  
-#' @return A list of 5 instance of class EMS or NULL
+#' @return A list of instance of class EMS or empty list
 #' @examples 
 #' container <- Container(width = 2, length = 4, height = 2)
 #' box <- Box(width = 1, length = 1, height = 1, origin = c(0, 0,0))
@@ -17,24 +17,31 @@ CreateEMS <- function (container,
         stop('Specify origin for the box')
     }
 
-    # check if box is inside container
-    box_vertex <- box@origin + c(0, box@height, 0)  # top vertex of the box
-    if (!(# check by length axis
-        (box_vertex[1] >= container@origin[1] & 
-         box_vertex[1] < (container@origin[1] + container@length)
-        ) &
-        # check by height axis
-        (box_vertex[2] >= container@origin[2] & 
-         box_vertex[2] < (container@origin[2] + container@height)
-        ) &
-        # check by width axis
-        (box_vertex[3] >= container@origin[3] & 
-         box_vertex[3] < (container@origin[3] + container@width)
-        )
-    )
-    ) {
-        # box is outside the container
-        return(list(NULL, NULL, NULL, NULL, NULL))
+    #' Check if the box is otside the container
+    #'
+    #' @param container - An object of class 'Container' or 'EMS'
+    #' @param box       - An object of class 'Box'
+    #' @return TRUE/FALSE 
+    CheckIfBoxIsOutside <- function (container, box) {
+        # get top and bottom vertexes of the container
+        container_vertex1 <- container@origin
+        container_vertex2 <- container@origin + c(container@length, container@height, container@width)
+
+        # get 4 vertexes of the box
+        box_vertex1 <- box@origin
+        box_vertex2 <- box@origin + c(0, box@height, 0)
+        box_vertex3 <- box@origin + c(0, 0, box@width)
+        box_vertex4 <- box@origin + c(box@length, 0, 0)
+
+        is_outside <- 
+            (container_vertex1[2] >= box_vertex2[2] |
+             container_vertex2[2] <= box_vertex1[2] |
+             container_vertex2[1] <= box_vertex1[1] |
+             container_vertex1[1] >= box_vertex4[1] |
+             container_vertex1[3] >= box_vertex3[3] |
+             container_vertex2[3] <= box_vertex1[3])
+
+        return(is_outside)
     }
     
     #' Check if EMS has nonzero parameters
@@ -42,12 +49,19 @@ CreateEMS <- function (container,
     #' @param EMS - An instance of class EMS
     #' @return TRUE if EMS is valid (all parameters are nonzero) otherwise FALSE
     CheckIfEMSvalid <- function (EMS_object) {
-        if (EMS_object@length == 0 | EMS_object@height == 0 | EMS_object@width == 0 ) {
+        if (EMS_object@length <= 0 | EMS_object@height <= 0 | EMS_object@width <= 0 ) {
             return(FALSE)
         } else {
             return(TRUE)
         }
     }
+
+
+    if (CheckIfBoxIsOutside(container, box)) {
+        return(list())        
+    }
+
+    ems_list <- list()
     
     # EMS 1:
     EMS1 <- EMS(origin = container@origin, 
@@ -56,8 +70,8 @@ CreateEMS <- function (container,
                 width = container@width
                 )
     
-    if (!CheckIfEMSvalid(EMS1)) {
-        EMS1 <- NULL
+    if (CheckIfEMSvalid(EMS1)) {
+        ems_list <- c(ems_list, EMS1)
     }
     
     # EMS 2:
@@ -67,8 +81,8 @@ CreateEMS <- function (container,
                 width = box@origin[3] - container@origin[3]
                 )
     
-    if (!CheckIfEMSvalid(EMS2)) {
-        EMS2 <- NULL
+    if (CheckIfEMSvalid(EMS2)) {
+        ems_list <- c(ems_list, EMS2)
     }
     
     # EMS 3:
@@ -78,8 +92,8 @@ CreateEMS <- function (container,
                 )
     EMS3@length <- ((container@origin + c(container@length, 0, 0)) - EMS3@origin)[1]
     
-    if (!CheckIfEMSvalid(EMS3)) {
-        EMS3 <- NULL
+    if (CheckIfEMSvalid(EMS3)) {
+        ems_list <- c(ems_list, EMS3)
     }
     
     # EMS 4:
@@ -89,8 +103,8 @@ CreateEMS <- function (container,
                 )
     EMS4@width <- ((container@origin + c(0, 0, container@width)) - EMS4@origin)[3]
     
-    if (!CheckIfEMSvalid(EMS4)) {
-        EMS4 <- NULL
+    if (CheckIfEMSvalid(EMS4)) {
+        ems_list <- c(ems_list, EMS4)
     }
     
     # EMS 5:
@@ -100,9 +114,45 @@ CreateEMS <- function (container,
                 )
     EMS5@height <- ((container@origin + c(0, container@height, 0)) - EMS5@origin)[2]
     
-    if (!CheckIfEMSvalid(EMS5)) {
-        EMS5 <- NULL
+    if (CheckIfEMSvalid(EMS5)) {
+        ems_list <- c(ems_list, EMS5)
     }
     
-    return(list(EMS1, EMS2, EMS3, EMS4, EMS5))
+    return(ems_list)
+}
+
+
+# TODO: fix a bug related to EMS that 'are in the air', 
+#       what means we can't place a box in such EMS
+
+
+#' Update list of container's EMS after box is placed
+#'
+#' @param ems_list - A list of objects of class EMS 
+#' @param box      - An object of class Box
+#'
+#' @return A list of objects of class EMS
+UpdateEMS <- function (ems_list, box) {
+    new_ems_list <- ems_list
+
+    # indeces of EMS that are going to be updated and 
+    # therefore replaced by it's update 
+    ind_to_remove <- c()
+
+    for (i in 1:length(ems_list)) {
+        ems <- ems_list[[i]]
+
+        new_ems <- CreateEMS(ems, box)
+        if (length(new_ems) != 0) {
+            ind_to_remove <- c(ind_to_remove, i)
+            new_ems_list <- c(new_ems_list, new_ems)
+        }
+    } 
+
+    # remove EMS that were updated
+    if (length(ind_to_remove) != 0) {
+        new_ems_list <- new_ems_list[-ind_to_remove]
+    }
+    
+    return(new_ems_list)
 }
