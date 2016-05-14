@@ -80,3 +80,30 @@ PlotCube <- function (object,
        points3d(x = 0, y = 0, z = 0, color = 'red', size = 7)
     }
 }
+
+
+#' Plot a Packing Solution
+#'
+#' @param packing_solution - A list 
+#' @return Returns as many plots of Containers with placed Boxes 
+#'         as many nonempty Containers are in the packing solution
+PlotPackingSolution <- function (packing_solution) {
+
+  for (i in 1:length(packing_solution)) {
+    if (length(packing_solution[[i]]) == 1) {
+      next
+    } else {
+      # initialize device
+      RGLInit(new.device = T)
+
+      # plot a container
+      PlotCube(packing_solution[[i]][[1]])
+
+      # plot boxes 
+      for (j in 2:length(packing_solution[[i]])) {
+        PlotCube(packing_solution[[i]][[j]])
+      }
+    }
+  }
+
+}
