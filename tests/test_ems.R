@@ -1,4 +1,4 @@
-context('EMS')
+context('CreateEMS')
 
 source('../R/EMS.R')
 source('../R/objects_definition.R')
