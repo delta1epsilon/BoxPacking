@@ -122,8 +122,59 @@ CreateEMS <- function (container,
 }
 
 
-# TODO: fix a bug related to EMS that 'are in the air', 
-#       what means we can't place a box in such EMS
+#' Check if an EMS is totally inscribed by other EMS
+#'
+#' @param ems_to_check - An object of class EMS to check if it's in ems
+#' @param ems          - An object of class EMS
+#' @return TRUE if ems_to_check is inside ems otherwise FALSE
+CheckIfEMSisInsideOtherEMS <- function (ems_to_check, ems) {
+    # get 2 vertexes of ems_to_check
+    ems_to_check_vertex1 <- ems_to_check@origin
+    ems_to_check_vertex2 <- 
+        ems_to_check@origin + c(ems_to_check@length, ems_to_check@height, ems_to_check@width)
+
+    # get 2 vertexes of ems
+    ems_vertex1 <- ems@origin
+    ems_vertex2 <- ems@origin + c(ems@length, ems@height, ems@width)
+
+    ems_is_inside <- 
+        all(ems_to_check_vertex1 >= ems_vertex1) &
+        all(ems_to_check_vertex2 <= ems_vertex2)
+
+    if (ems_is_inside) {
+        return(TRUE)
+    } else {
+        return(FALSE)
+    }
+}
+
+
+#' Remove those EMS from list which are inside other EMS
+#'
+#' @param ems_list - A list of objects of class EMS
+#' @return An updated list of EMS objects
+EliminateEMSList <- function (ems_list) {
+    sequence <- 1:length(ems_list)
+    ind_remove <- c()
+
+    for (i in sequence) {
+        ems <- ems_list[[i]]
+
+        for (j in setdiff(sequence, i)) {
+            if (CheckIfEMSisInsideOtherEMS(ems, ems_list[[j]])) {
+                # the ems in inside other ems
+                ind_remove <- c(ind_remove, i)
+                break
+            }
+        }
+    }
+
+    if (length(ind_remove) != 0) {
+        ems_list <- ems_list[-ind_remove]
+    }
+
+    return(ems_list) 
+}
 
 
 #' Update list of container's EMS after box is placed
@@ -154,5 +205,8 @@ UpdateEMS <- function (ems_list, box) {
         new_ems_list <- new_ems_list[-ind_to_remove]
     }
     
+    # remove EMS that are inside other EMS
+    new_ems_list <- EliminateEMSList(new_ems_list)
+
     return(new_ems_list)
 }
