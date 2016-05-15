@@ -177,6 +177,22 @@ EliminateEMSList <- function (ems_list) {
 }
 
 
+#' Check If the Box equals to the Container
+#'
+#' @param box - An object of class Box
+#' @param ems - An object of class EMS
+#' @return TRUE/FALSE
+CheckIfBoxEqualsEMS <- function (box, ems) {
+    BoxEqualsEMS <- 
+        (all(box@origin == ems@origin) &
+         box@length == ems@length &
+         box@height == ems@height &
+         box@width == ems@width
+         )
+    return(BoxEqualsEMS)
+}
+
+
 #' Update list of container's EMS after box is placed
 #'
 #' @param ems_list - A list of objects of class EMS 
@@ -194,7 +210,7 @@ UpdateEMS <- function (ems_list, box) {
         ems <- ems_list[[i]]
 
         new_ems <- CreateEMS(ems, box)
-        if (length(new_ems) != 0) {
+        if (length(new_ems) != 0 | CheckIfBoxEqualsEMS(box, ems)) {
             ind_to_remove <- c(ind_to_remove, i)
             new_ems_list <- c(new_ems_list, new_ems)
         }
