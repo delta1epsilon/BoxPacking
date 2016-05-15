@@ -18,6 +18,9 @@ PerformBinPacking <- function (containers,
                                verbose = FALSE, 
                                plotSolution = FALSE) {
 
+    n <- length(containers)  # number of containers
+    m <- length(boxes)  # number of boxes
+
     # initialize list of best chromosomes and their fitness vector
     # to be passed to next generation
     selected_chromosomes <- list()
