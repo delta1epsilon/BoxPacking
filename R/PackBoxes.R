@@ -90,3 +90,40 @@ PackBoxes <- function (boxes,
 
     return(packing_solution)
 }
+
+
+#' Calcuate a Fitness of Packing Solution (Percent of Wasted Space)
+#'
+#' @param packing_solution - A list
+#' @return A number between 0 and 1
+CalculateFitness <- function (packing_solution) {
+
+    #' Calculate volume of an object
+    #'
+    #' @param object - An object of class Box or Container
+    #' @return A numeric
+    CalculateVolume <- function (object) {
+        volume <- object@length * object@height * object@width
+        return(volume)
+    }
+
+    container_volume <- 0
+    boxes_volume <- 0
+
+    for (i in 1:length(packing_solution)) {
+        if (length(packing_solution[[i]]) == 1) {
+            # the Container is empty
+            next
+        } else {
+            container_volume <- container_volume + CalculateVolume(packing_solution[[i]][[1]])
+            
+            for (j in 2:length(packing_solution[[i]])) {
+                boxes_volume <- boxes_volume + CalculateVolume(packing_solution[[i]][[j]])
+            }
+        }
+    }
+
+    # calculate percent of wasted space
+    fitness <- 1 - (boxes_volume / container_volume)
+    return(fitness)
+}
