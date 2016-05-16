@@ -118,6 +118,17 @@ CreateEMS <- function (container,
         ems_list <- c(ems_list, EMS5)
     }
     
+    # EMS 6:
+    EMS6 <- EMS(origin = container@origin, 
+                length = container@length,
+                height = box@origin[2] - container@origin[2],
+                width = container@width
+                )
+    
+    if (CheckIfEMSvalid(EMS6)) {
+        ems_list <- c(ems_list, EMS6)
+    }
+
     return(ems_list)
 }
 
