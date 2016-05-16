@@ -60,7 +60,10 @@ PackBoxes <- function (boxes,
                 box <- boxes[[box_ind]]
 
                 # get containers EMS
-                con_EMS <- packing_solution[[container_ind]][[1]]@ems
+                con_EMS <- packing_solution[[container_ind]][[1]]@ems  # a list
+
+                # prioritize container's EMS
+                con_EMS <- PrioritizeEMS(con_EMS)
 
                 for (ems in con_EMS) {  # for each EMS in the container
                     if (box@length <= ems@length & 

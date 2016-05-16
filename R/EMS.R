@@ -237,3 +237,30 @@ UpdateEMS <- function (ems_list, box) {
 
     return(new_ems_list)
 }
+
+
+#' Prioritize EMS in EMS list (sort EMS by distance to the box origin)
+#'
+#' @param ems_list - A list with objects of class EMS
+#' @return A list with objects of class EMS
+PrioritizeEMS <- function (ems_list) {
+
+    #' Calculate distance (Euclidean) from EMS origin to Box origin
+    #' 
+    #' @param ems - An object of class EMS
+    #' @return A numeric
+    CalculateDistanceToBoxOrigin <- function (ems) {
+        distance <- sqrt(sum(ems@origin^2)) 
+        return(distance)
+    }
+
+    # calculate distance for each EMS in ems_list
+    distances <- sapply(ems_list, CalculateDistanceToBoxOrigin)
+
+    # compute EMS order
+    ems_order <- order(distances)
+
+    # prioritize EMS
+    ems_list <- ems_list[ems_order]
+    return(ems_list)
+}
