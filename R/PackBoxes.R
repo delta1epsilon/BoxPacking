@@ -1,4 +1,3 @@
-# TODO: write EMS prioritization function
 # TODO: write a function for choosing best box rotation
 
 
