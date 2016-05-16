@@ -101,3 +101,18 @@ test_that('Test EMS 6',
                          )
           }
           )
+
+
+test_that('Test EMS 7',
+          {
+            container <- EMS(origin = c(1, 0, 1), length = 1, height = 2, width = 1)
+            box <- Box(length = 1.5, height = 1.5, width = 1.5, origin = c(0.5, 0.5, 0.5))
+            
+            expected <- list(EMS(origin = c(1, 0, 1), length = 1, height = 0.5, width = 1))
+
+            result <- CreateEMS(container, box)
+            expect_equal(result,
+                         expected
+                         )
+          }
+          )
