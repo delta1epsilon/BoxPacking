@@ -1,9 +1,8 @@
 # TODO:
-# 1. Write placement selection
-# 2. Write Custom Chromosome initialization
-# 3. Modify Chromosome Selection
-# 4. Write Chromosome Crossover and Mutation
-# 5. Write Tests
+# 1. Write Custom Chromosome initialization
+# 2. Modify Chromosome Selection
+# 3. Write Chromosome Crossover and Mutation
+# 4. Write Tests
 
 library(dplyr)
 library(rgl)
@@ -35,8 +34,9 @@ b10 <- Box(length = 0.5, height = 0.5, width = 0.5)
 b11 <- Box(length = 1.5, height = 1.5, width = 1.5)
 b12 <- Box(length = 1.5, height = 0.5, width = 0.5)
 b13 <- Box(length = 1, height = 1, width = 1)
+b14 <- Box(length = 1, height = 1, width = 1)
 
-boxes <- list(b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12, b13)
+boxes <- list(b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12, b13, b14)
 containers <- list(c1, c2)
 
 # Bin Packing
