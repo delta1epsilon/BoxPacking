@@ -46,7 +46,11 @@ PerformBinPacking <- function (containers,
             }
 
             # add new chromosome to the population on current generation
-            chromosome <- CreateChromosome(n_boxes = m, n_containers = n)
+            if (iter == 1 & chromosome_i <= 4) {  # generate 4 special chromosomes in first generation
+                chromosome <- CustomChromosomeInitialization(boxes, n_containers = n, sort_by = chromosome_i)
+            } else {
+                chromosome <- CreateChromosome(n_boxes = m, n_containers = n)
+            }
             population_chromosomes <- c(population_chromosomes, list(chromosome))
 
             # perform packing
