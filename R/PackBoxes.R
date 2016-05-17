@@ -50,8 +50,8 @@ PackBoxes <- function (boxes,
             box_ind <- box_packing_sequence[box_i]  # get index of box from chromosome
 
             if (placed_boxes[box_ind]) {
-              # the box is already placed, move to next one
-              next
+                # the box is already placed, move to next one
+                next
             } else {
                 # the box isn't placed yet
 
@@ -65,22 +65,23 @@ PackBoxes <- function (boxes,
                 con_EMS <- PrioritizeEMS(con_EMS)
 
                 for (ems in con_EMS) {  # for each EMS in the container
-                    if (box@length <= ems@length & 
-                        box@height <= ems@height & 
-                        box@width <= ems@width) {
+                    if (CheckIfBoxFitsIntoEMS(box, ems)) {
 
-                        # 1. place box in ems: set box origin to EMS origin 
+                        # 1. choose best box placement
+                        box <- PerformPlacementSelection(box, ems)
+
+                        # 2. place box in ems: set box origin to EMS origin 
                         box@origin <- ems@origin 
 
-                        # 2. write placement in packing solution 
+                        # 3. write placement in packing solution 
                         packing_solution[[container_ind]] <- 
                             c(packing_solution[[container_ind]], box)
 
-                        # 3. update EMS for the container
+                        # 4. update EMS for the container
                         packing_solution[[container_ind]][[1]]@ems <- 
                             UpdateEMS(packing_solution[[container_ind]][[1]]@ems, box)
 
-                        # 4. mark the box as placed:
+                        # 5. mark the box as placed:
                         placed_boxes[box_ind] <- TRUE
 
                         break
