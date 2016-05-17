@@ -13,6 +13,7 @@ source('R/objects_definition.R')
 source('R/plotcube.R')
 source('R/EMS.R')
 source('R/operations_on_chromosomes.R')
+source('R/operations_on_boxes.R')
 source('R/PackBoxes.R')
 source('R/PerformBinPacking.R')
 
