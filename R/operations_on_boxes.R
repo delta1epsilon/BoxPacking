@@ -43,7 +43,7 @@ PerformPlacementSelection <- function (box, ems) {
         margins <- c(ems@length - box@length, 
                      ems@height - box@height,
                      ems@width - box@width
-        )
+                    )
         possible_rotations <- c(possible_rotations, list(box))
         possible_margins <- c(possible_margins, list(margins))
     }
