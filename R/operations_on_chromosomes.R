@@ -111,38 +111,38 @@ PerformSelection <- function (population, fitness) {
 }
 
 
+#' Mutate a chromosome
+#'
+#' @param chromosome - A list with BPS and CLS
+#' @return A chromosome
+MutateChromosome <- function (chromosome) {
+    n_boxes <- length(chromosome$BPS) 
+    n_containers <- length(chromosome$CLS)
+
+    if (n_boxes <= 2) {
+        chromosome$BPS <- rev(chromosome$BPS)
+    } else {
+        replace_boxes_ind <- sample(1:n_boxes, 2)
+        chromosome$BPS[replace_boxes_ind] <- rev(chromosome$BPS[replace_boxes_ind])
+    }
+    
+    if (n_containers <= 2) {
+        chromosome$CLS <- rev(chromosome$CLS)            
+    } else {
+        replace_containers_ind <- sample(1:n_containers, 2)
+        chromosome$CLS[replace_containers_ind] <- rev(chromosome$CLS[replace_containers_ind])
+    }
+
+    return(chromosome)
+}
+
+
 #' Perform Mutation
 #'
 #' @param population    - A list of chromosomes
 #' @param mutation_prob - A numeric in [0; 1]; A probability for chromosome mutation  
 #' @return A list of chromosomes
 PerformMutation <- function (population, mutation_prob) {
-
-    #' Mutate a chromosome
-    #'
-    #' @param chromosome - A list with BPS and CLS
-    #' @return A chromosome
-    MutateChromosome <- function (chromosome) {
-        n_boxes <- length(chromosome$BPS) 
-        n_containers <- length(chromosome$CLS)
-
-        if (n_boxes <= 2) {
-            chromosome$BPS <- rev(chromosome$BPS)
-        } else {
-            replace_boxes_ind <- sample(1:n_boxes, 2)
-            chromosome$BPS[replace_boxes_ind] <- rev(chromosome$BPS[replace_boxes_ind])
-        }
-        
-        if (n_containers <= 2) {
-            chromosome$CLS <- rev(chromosome$CLS)            
-        } else {
-            replace_containers_ind <- sample(1:n_containers, 2)
-            chromosome$CLS[replace_containers_ind] <- rev(chromosome$CLS[replace_containers_ind])
-        }
-
-        return(chromosome)
-    }
-
     population_size <- length(population)
 
     # choose chromosomes for mutation with probability 'mutation_prob'
@@ -156,4 +156,80 @@ PerformMutation <- function (population, mutation_prob) {
 
     new_population <- c(not_mutated_chromosomes, mutated_chromosomes)
     return(new_population)
+}
+
+
+#' Crossover 2 Chromosomes
+#'
+#' @param parent1 - A chromosome
+#' @param parent2 - A chromosome
+#' @return A chromosome
+CrossoverChromosomes <- function (parent1, parent2) {
+    n_boxes <- length(parent1$BPS)
+    n_containers <- length(parent1$CLS)
+
+    # randomly choose 2 cutting points for BPS 
+    cutting_box_points <- sample(1:n_boxes, 2)
+    cut_box_i <- min(cutting_box_points)
+    cut_box_j <- max(cutting_box_points)
+
+    # randomly choose 2 cutting points for CLS
+    cutting_con_points <- sample(1:n_containers, 2)
+    cut_con_i <- min(cutting_con_points)
+    cut_con_j <- max(cutting_con_points)
+
+    # create a child
+    child <- list(BPS = rep(0, n_boxes), CLS = rep(0, n_containers))
+
+    # copy genes between cutting points from parent1 to child
+    child$BPS[(cut_box_i+1):cut_box_j] <- parent1$BPS[(cut_box_i+1):cut_box_j]
+    child$CLS[(cut_con_i+1):cut_con_j] <- parent1$CLS[(cut_con_i+1):cut_con_j]
+
+    # get indeces of missing genes 
+    box_ind <- ifelse(cut_box_j != n_boxes,
+                      list(c((cut_box_j + 1):n_boxes, 1:cut_box_i)),
+                      list(c(1:cut_box_i))
+                      )
+    con_ind <- ifelse(cut_con_j != n_containers,
+                      list(c((cut_con_j + 1):n_containers, 1:cut_con_i)),
+                      list(c(1:cut_con_i))
+                      )
+
+    # fill missing genes
+    child$BPS[unlist(box_ind)] <- setdiff(parent2$BPS, child$BPS)
+    child$CLS[unlist(con_ind)] <- setdiff(parent2$CLS, child$CLS)
+
+    return(child)
+}
+
+
+#' Perform Crossover
+#'
+#' @param mating_pool    - A list of chromosomes to crossover
+#' @param crossover_prob - A numeric in [0; 1]; A probability for chromosome crossover  
+#' @return A list of chromosomes
+PerformCrossover <- function (mating_pool, crossover_prob) {
+    next_population <- list()
+
+    while (length(mating_pool) != 0) {
+        if (length(mating_pool) > 1) {
+            ind <- sample(1:length(mating_pool), 2)
+
+            if (rbinom(1, 1, crossover_prob) == 1) {
+                child1 <- CrossoverChromosomes(mating_pool[[ind[1]]], mating_pool[[ind[2]]])
+                child2 <- CrossoverChromosomes(mating_pool[[ind[2]]], mating_pool[[ind[1]]])
+                
+                next_population <- c(next_population, list(child1, child2))
+                mating_pool <- mating_pool[-ind]
+            } else {
+                next_population <- c(next_population, mating_pool[ind])
+                mating_pool <- mating_pool[-ind]
+            }
+        } if else (length(mating_pool) == 1) {
+            next_population <- c(next_population, mating_pool)
+            mating_pool <- list()
+        }
+    }
+
+    return(next_population)
 }
