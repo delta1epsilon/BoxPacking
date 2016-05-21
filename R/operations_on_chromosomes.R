@@ -225,7 +225,7 @@ PerformCrossover <- function (mating_pool, crossover_prob) {
                 next_population <- c(next_population, mating_pool[ind])
                 mating_pool <- mating_pool[-ind]
             }
-        } if else (length(mating_pool) == 1) {
+        } else if (length(mating_pool) == 1) {
             next_population <- c(next_population, mating_pool)
             mating_pool <- list()
         }
