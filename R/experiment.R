@@ -1,8 +1,5 @@
 # TODO:
-# 1. Write Custom Chromosome initialization
-# 2. Modify Chromosome Selection
-# 3. Write Chromosome Crossover and Mutation
-# 4. Write Tests
+# 1. Write Tests
 
 library(dplyr)
 library(rgl)
@@ -45,7 +42,12 @@ solution <-
                       boxes = boxes,
                       n_iter = 4, 
                       population_size = 30, 
-                      selection_size = 5,
-                      verbose = TRUE,
+                      elitism_size = 5,
+                      crossover_prob = 0.5, 
+                      mutation_prob = 0.5,
+                      verbose = TRUE, 
                       plotSolution = TRUE
                       )
+
+
+
