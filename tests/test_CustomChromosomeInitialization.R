@@ -12,32 +12,32 @@ boxes <- list(b1, b2, b3, b4)
 
 test_that('Test by length',
           {
-            result <- CustomChromosomeInitialization(boxes, 2, 1)
+            result <- CustomChromosomeInitialization(boxes, 2)
             expected <- c(3, 2, 4, 1)
-            expect_equal(result$BPS, expected)
+            expect_equal(result[[1]]$BPS, expected)
           }
          )
 
 test_that('Test by height',
           {
-            result <- CustomChromosomeInitialization(boxes, 2, 2)
+            result <- CustomChromosomeInitialization(boxes, 2)
             expected <- c(4, 1, 2, 3)
-            expect_equal(result$BPS, expected)
+            expect_equal(result[[2]]$BPS, expected)
           }
          )
 
 test_that('Test by width',
           {
-            result <- CustomChromosomeInitialization(boxes, 2, 3)
+            result <- CustomChromosomeInitialization(boxes, 2)
             expected <- c(4, 1, 2, 3)
-            expect_equal(result$BPS, expected)
+            expect_equal(result[[3]]$BPS, expected)
           }
          )
 
 test_that('Test by volume',
           {
-            result <- CustomChromosomeInitialization(boxes, 2, 4)
+            result <- CustomChromosomeInitialization(boxes, 2)
             expected <- c(4, 3, 2, 1)
-            expect_equal(result$BPS, expected)
+            expect_equal(result[[4]]$BPS, expected)
           }
          )
