@@ -96,31 +96,31 @@ PerformBinPacking <- function (containers,
         population <- c(population, elitism_chromosomes)
         chromosome_fitness <- c(chromosome_fitness, elitism_chromosomes_fitness)
 
-        # Select the best chromosomes to next generation 
-        best_chromosomes_ind <- 
-            PerformElitism(chromosome_fitness, 
-                           elitism_size
-                           )
+        if (iter != n_iter) {  # check if we are not on the last iteration
 
-        elitism_chromosomes <- population[best_chromosomes_ind]
-        elitism_chromosomes_fitness <- chromosome_fitness[best_chromosomes_ind]
+            # Select the best chromosomes to next generation 
+            best_chromosomes_ind <- 
+                PerformElitism(chromosome_fitness, 
+                               elitism_size
+                               )
 
-        # remove elitism chromosomes from the population 
-        population <- population[-best_chromosomes_ind]
-        chromosome_fitness <- chromosome_fitness[-best_chromosomes_ind]
+            elitism_chromosomes <- population[best_chromosomes_ind]
+            elitism_chromosomes_fitness <- chromosome_fitness[best_chromosomes_ind]
 
-        # Selection
-        mating_pool <- PerformSelection(population, fitness = chromosome_fitness)
+            # remove elitism chromosomes from the population 
+            population <- population[-best_chromosomes_ind]
+            chromosome_fitness <- chromosome_fitness[-best_chromosomes_ind]
 
-        # Crossover
-        crossovered_chromosomes <- PerformCrossover(mating_pool, crossover_prob = crossover_prob)
+            # Selection
+            mating_pool <- PerformSelection(population, fitness = chromosome_fitness)
 
-        # Mutation
-        population <- PerformMutation(crossovered_chromosomes, mutation_prob = mutation_prob)
+            # Crossover
+            crossovered_chromosomes <- PerformCrossover(mating_pool, crossover_prob = crossover_prob)
+
+            # Mutation
+            population <- PerformMutation(crossovered_chromosomes, mutation_prob = mutation_prob)
+        }
     }
-
-    population <- c(population, elitism_chromosomes)
-    chromosome_fitness <- c(chromosome_fitness, elitism_chromosomes_fitness)
 
     # choose solution of packing after all iterations
     best_chromosome <- population[[which.min(chromosome_fitness)]]
