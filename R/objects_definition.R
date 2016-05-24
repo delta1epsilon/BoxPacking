@@ -1,4 +1,5 @@
 # define class for containers
+#' @export Container
 Container <- setClass('Container',
                       slots = c(origin = 'numeric',
                                 length = 'numeric',
@@ -18,6 +19,7 @@ Container <- setClass('Container',
 # create method 'initialize' for Container class to create 
 # slot EMS (initial EMS is whole Container) when
 # an instance of class Container is being created 
+#' @export 
 setMethod('initialize', 
           'Container',
           function (.Object, ...) {
@@ -35,6 +37,7 @@ setMethod('initialize',
           )
 
 # define class for boxes
+#' @export Box
 Box <- setClass('Box',
                 slots = c(origin = 'numeric',
                           length = 'numeric',
@@ -51,6 +54,7 @@ Box <- setClass('Box',
                 ) 
 
 # define class for Empty Maximal Spaces
+#' @export EMS
 EMS <- setClass('EMS',
                 slots = c(origin = 'numeric',
                           length = 'numeric',

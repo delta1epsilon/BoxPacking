@@ -1,0 +1,10 @@
+Package: BoxPacking
+Type: Package
+Title: Pack Boxes in optimal way
+Version: 0.1.0
+Author: delta1epsilon
+Maintainer: delta1epsilon  <ihorko.kovalyshyn@gmail.com>
+Description: The package solves 3D Bin Packing Problem
+License: -
+LazyData: TRUE
+RoxygenNote: 5.0.1
