@@ -1,5 +1,4 @@
 library(rgl)
-library(dplyr)
 
 #' A custom function to initialize RGL device
 #' 
@@ -49,20 +48,20 @@ PlotCube <- function (object,
     # create data frame with coordinates of lines
     # to be joined to form a cube
     lines <- data.frame(vertex1, origin + c(0, height, 0))
-    lines <- lines %>% cbind(data.frame(vertex1, origin + c(length, 0, 0)))
-    lines <- lines %>% cbind(data.frame(vertex1, origin + c(0, 0, width)))
+    lines <- cbind(lines, data.frame(vertex1, origin + c(length, 0, 0)))
+    lines <- cbind(lines, data.frame(vertex1, origin + c(0, 0, width)))
     
-    lines <- lines %>% cbind(data.frame(vertex2, origin + c(0, 0, width)))
-    lines <- lines %>% cbind(data.frame(vertex2, origin + c(0, height, 0)))
-    lines <- lines %>% cbind(data.frame(vertex2, origin + c(length, height, width)))
+    lines <- cbind(lines, data.frame(vertex2, origin + c(0, 0, width)))
+    lines <- cbind(lines, data.frame(vertex2, origin + c(0, height, 0)))
+    lines <- cbind(lines, data.frame(vertex2, origin + c(length, height, width)))
     
-    lines <- lines %>% cbind(data.frame(vertex3, origin + c(0, height, 0)))
-    lines <- lines %>% cbind(data.frame(vertex3, origin + c(length, 0, 0)))
-    lines <- lines %>% cbind(data.frame(vertex3, origin + c(length, height, width)))
+    lines <- cbind(lines, data.frame(vertex3, origin + c(0, height, 0)))
+    lines <- cbind(lines, data.frame(vertex3, origin + c(length, 0, 0)))
+    lines <- cbind(lines, data.frame(vertex3, origin + c(length, height, width)))
     
-    lines <- lines %>% cbind(data.frame(vertex4, origin + c(0, 0, width)))
-    lines <- lines %>% cbind(data.frame(vertex4, origin + c(length, 0, 0)))
-    lines <- lines %>% cbind(data.frame(vertex4, origin + c(length, height, width)))
+    lines <- cbind(lines, data.frame(vertex4, origin + c(0, 0, width)))
+    lines <- cbind(lines, data.frame(vertex4, origin + c(length, 0, 0)))
+    lines <- cbind(lines, data.frame(vertex4, origin + c(length, height, width)))
     
     lines <- t(lines)
     
