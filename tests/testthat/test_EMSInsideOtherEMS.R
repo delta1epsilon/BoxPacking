@@ -1,8 +1,5 @@
 context('CheckIfEMSisInsideOtherEMS')
 
-source('../R/EMS.R')
-source('../R/objects_definition.R')
-
 test_that('Test 1',
           {
             ems1 <- EMS(origin = c(1.5, 0.5, 0), length = 0.5, height = 1.5, width = 2)

@@ -1,8 +1,5 @@
 context('CreateEMS')
 
-source('../R/EMS.R')
-source('../R/objects_definition.R')
-
 test_that('Test EMS 1',
           {
             container <- Container(length = 2, height = 2, width = 2)

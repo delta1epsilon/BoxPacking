@@ -1,8 +1,5 @@
 context('CustomChromosomeInitialization')
 
-source('../R/operations_on_chromosomes.R')
-source('../R/objects_definition.R')
-
 b1 <- Box(length = 0.5, height = 0.5, width = 0.5)
 b2 <- Box(length = 1, height = 0.5, width = 0.5)
 b3 <- Box(length = 2, height = 0.5, width = 0.5)

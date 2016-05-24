@@ -1,8 +1,5 @@
 context('PerformPlacementSelection')
 
-source('../R/objects_definition.R')
-source('../R/operations_on_boxes.R')
-
 test_that('Test 1',
           {
             box <- Box(origin = c(0, 0, 0), length = 2, height = 1, width = 1)
