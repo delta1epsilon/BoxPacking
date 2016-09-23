@@ -1,5 +1,16 @@
-# 3D Bin Packing Problem
+# BoxPacking: R package for solving three-dimensional bin packing problem
 
+## Problem description
+
+
+In the bin packing problem, the task is to select one or more bins from a set of available bins to pack three dimensional, rectangular boxes such that the usage of the bin space is maximized. [Read more about the problem.](https://en.wikipedia.org/wiki/Bin_packing_problem)
+
+## Install
+
+
+## Example
+
+Consider an example where 20 boxes of different sizes are going to be packed into containers 2x2x2.
 
 ```
 # create containers
