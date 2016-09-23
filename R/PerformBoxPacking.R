@@ -1,4 +1,4 @@
-#' Perform Bin Packing
+#' Perform Box Packing
 #'
 #' @param containers      A list of objects of class Container
 #' @param boxes           A list of objects of class Box
@@ -37,9 +37,9 @@
 #' boxes <- list(b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12, b13, b14)
 #' containers <- list(c1, c2)
 #'
-#' # Bin Packing
+#' # Box Packing
 #' solution <-
-#'      PerformBinPacking(containers = containers,
+#'      PerformBoxPacking(containers = containers,
 #'                        boxes = boxes,
 #'                        n_iter = 4,
 #'                        population_size = 30,
@@ -51,7 +51,7 @@
 #'                        )
 #'
 #' @export
-PerformBinPacking <- function (containers,
+PerformBoxPacking <- function (containers,
                                boxes,
                                n_iter,
                                population_size,

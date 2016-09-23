@@ -1,4 +1,14 @@
-# define class for containers
+#' An s4 class to represent a Container
+#'
+#' @slot origin A length-three vector 
+#' @slot length A numeric
+#' @slot height A numeric
+#' @slot width A numeric
+#'
+#' @examples 
+#' # create a container with size 2 x 2 x 2
+#' c1 <- Container(length = 2, height = 2, width = 2)
+#'
 #' @export Container
 Container <- setClass('Container',
                       slots = c(origin = 'numeric',
@@ -36,7 +46,18 @@ setMethod('initialize',
           }
           )
 
-# define class for boxes
+#' An s4 class to represent a Box
+#'
+#' @slot origin A length-three vector 
+#' @slot length A numeric
+#' @slot height A numeric
+#' @slot width A numeric
+#' @slot weight A numeric
+#'
+#' @examples 
+#' # create a box with size 1 x 1 x 1
+#' b1 <- Box(length = 1, height = 1, width = 1)
+#'
 #' @export Box
 Box <- setClass('Box',
                 slots = c(origin = 'numeric',

@@ -3,6 +3,6 @@
 export(Box)
 export(Container)
 export(EMS)
-export(PerformBinPacking)
+export(PerformBoxPacking)
 exportMethods(initialize)
 import(rgl)
