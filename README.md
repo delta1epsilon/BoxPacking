@@ -2,16 +2,17 @@
 
 ## Problem description
 
-
 In the bin packing problem, the task is to select one or more bins from a set of available bins to pack three dimensional, rectangular boxes such that the usage of the bin space is maximized. [Read more about the problem.](https://en.wikipedia.org/wiki/Bin_packing_problem)
 
-## Install
+## Algorithm
 
+The package uses [Genetic algorithm for the three-dimensional bin packing problem with heterogeneous bins](https://www.researchgate.net/publication/273121476_A_genetic_algorithm_for_the_three-dimensional_bin_packing_problem_with_heterogeneous_bins).
+
+## Install
 
 ```
 devtools::install_github('delta1epsilon/BoxPacking')
 ```
-
 
 ## Example
 
