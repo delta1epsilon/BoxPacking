@@ -8,6 +8,11 @@ In the bin packing problem, the task is to select one or more bins from a set of
 ## Install
 
 
+```
+devtools::install_github('delta1epsilon/BoxPacking')
+```
+
+
 ## Example
 
 Consider an example where 20 boxes of different sizes are going to be packed into containers 2x2x2.
