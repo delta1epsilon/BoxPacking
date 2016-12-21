@@ -8,6 +8,8 @@ In the bin packing problem, the task is to select one or more bins from a set of
 
 The package uses [Genetic algorithm for the three-dimensional bin packing problem with heterogeneous bins](https://www.researchgate.net/publication/273121476_A_genetic_algorithm_for_the_three-dimensional_bin_packing_problem_with_heterogeneous_bins).
 
+You can read more about the algorithm in my [blog post](https://delta1epsilon.github.io/2016/3D-bin-packing-problem-in-R/). 
+
 ## Install
 
 ```
