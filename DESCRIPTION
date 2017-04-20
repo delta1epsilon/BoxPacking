@@ -8,3 +8,4 @@ Description: The package solves 3D Bin Packing Problem
 License: -
 LazyData: TRUE
 RoxygenNote: 5.0.1
+Imports: rgl
